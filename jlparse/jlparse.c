@@ -238,6 +238,7 @@ static mscm_value imp_jl2mscm(mscm_runtime *rt, jl_value_t *jval) {
         jl_value_t *file = jl_get_field(jval, "file");
         jl_value_t *line = jl_get_field(jval, "line");
         mscm_value mfile = jl2mscm(rt, file);
+        mfile->type = MSCM_TYPE_STRING;
         mscm_value mline = jl2mscm(rt, line);
         mscm_value data_pair =  mscm_make_pair(mfile, mline);
         mscm_gc_add(rt, data_pair);

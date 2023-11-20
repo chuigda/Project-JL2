@@ -9,6 +9,12 @@ ifndef CFLAGS
 		-g \
 		$(EXTRA_CFLAGS)
 endif
+ifndef MSCM_PATH
+	MSCM_PATH = $(shell dirname $(shell which mscm))/..
+endif
+ifndef JULIA_PATH
+	JULIA_PATH = "$(shell dirname $(shell which julia))/.."
+endif
 
 define LOG
 	@printf '\t%s\t%s\n' $1 $2
@@ -17,16 +23,18 @@ endef
 define COMPILE
 	$(call LOG,CC,$1)
 	@$(CC) $(CFLAGS) $1 \
-		-Iconfig -I../../include \
+		-I$(JULIA_PATH)/include/julia \
+		-I$(MSCM_PATH)/include \
 		-fPIC -c -o $2
 endef
 
 libjlparse.so: jlparse.o
 	$(call LOG,LINK,libjlparse.so)
 	@$(CC) $(CFLAGS) jlparse.o \
-		-L../.. $(LINKFLAGS) \
+		-L$(JULIA_PATH)/lib \
+		-L$(MSCM_PATH)/lib \
 		-lmscm -ljulia \
-		-shared -o libjlparse.so
+		-shared -fPIC -o libjlparse.so
 
 jlparse.o: jlparse.c
 	$(call COMPILE,$<,$@)
