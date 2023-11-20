@@ -5,3 +5,8 @@ end
 function generic_configure!(env::Dict{String, T} where T, key, value)
     magic!(env, key, value)
 end
+
+struct MeinStruktur{T}
+    x::T
+    xs::Vector{T}
+end

@@ -83,7 +83,7 @@ MSCM_NATIVE_FN(parse) {
                 filename->buf);
         mscm_runtime_trace_exit(rt);
     }
-    
+
     jl_value_t *jexpr = jl_parse_all(str, strlen(str),
                                     filename->buf, filename->size, 1);
     if (!jexpr) {
@@ -170,7 +170,9 @@ static char* read_to_string(char const *file) {
 
 static mscm_value jl2mscm(mscm_runtime *rt, jl_value_t *jval) {
     mscm_value ret = imp_jl2mscm(rt, jval);
-    mscm_gc_add(rt, ret);
+    if (ret) {
+        mscm_gc_add(rt, ret);
+    }
     return ret;
 }
 
