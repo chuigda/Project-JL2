@@ -10,3 +10,8 @@ struct MeinStruktur{T}
     x::T
     xs::Vector{T}
 end
+
+mutable struct SecondState{B} where B <: AbstractFloat
+    a::Int64
+    b::B
+end
