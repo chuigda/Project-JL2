@@ -5,7 +5,7 @@
     (repeat-call (lambda () (print "  ")) indent)
     (cond [(not (pair? s-expr)) (println s-expr)]
           [(= 'linenum (car s-expr))
-           (println "#line " (cadr s-expr) (cddr s-expr))]
+           (println "#line " (cadr s-expr) ":"(cddr s-expr))]
           [(= 'expr (car s-expr))
            (begin (println (cadr s-expr))
                   (foreach (lambda (e) (imp-pretty-print (+ indent 1) e))
