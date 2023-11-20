@@ -1,3 +1,3 @@
 (define e (jl-parse "sample/drill.jl"))
 
-(display e)
+(pretty-print e)

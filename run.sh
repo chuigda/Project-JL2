@@ -16,8 +16,6 @@ LD_LIBRARY_PATH="$JULIA_LIB_PATH:$MSCM_LIB_PATH:$LD_LIBRARY_PATH" mscm \
     $(realpath ./jlparse/libjlparse.so) \
     $MSCM_SHARE_SCM_PATH/std.scm \
     util.scm \
-    ast.scm \
-    astconv.scm \
-    jlcc.scm \
+    pretty.scm \
     drill.scm \
     $@
