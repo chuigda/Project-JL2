@@ -1,5 +1,3 @@
-function add(a::Int64, b::Int64)::Int64
-    a + b
+function generic_array_set!(arr::Vector{T}, index::I, value::T) where I <: Integer
+    arr[i] = value;
 end
-
-static_compile!(add, (Int64, Int64))
