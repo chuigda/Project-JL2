@@ -21,6 +21,7 @@
 
 MSCM_NATIVE_FN(parse);
 MSCM_NATIVE_FN(parse_str);
+MSCM_NATIVE_FN(sym2str);
 
 static mscm_value g_expr_v;
 static mscm_value g_linenum_node_v;
@@ -33,11 +34,15 @@ void mscm_load_ext(mscm_runtime *rt) {
         mscm_make_native_function("jl-parse", parse, 0, 0, 0);
     mscm_value parse_str_v =
         mscm_make_native_function("jl-parse-string", parse_str, 0, 0, 0);
+    mscm_value sym2str_v =
+        mscm_make_native_function("sym->str", sym2str, 0, 0, 0);
 
     mscm_runtime_push(rt, "jl-parse", parse_v);
     mscm_runtime_push(rt, "jl-parse-string", parse_str_v);
+    mscm_runtime_push(rt, "sym->str", sym2str_v);
     mscm_gc_add(rt, parse_v);
     mscm_gc_add(rt, parse_str_v);
+    mscm_gc_add(rt, sym2str_v);
 
     g_expr_v =
         mscm_make_string(mscm_slice_from_cstr("expr"), 0, 0);
@@ -143,6 +148,31 @@ MSCM_NATIVE_FN(parse_str) {
     mscm_gc_toggle(rt, false);
     mscm_value ret = jl2mscm(rt, jexpr);
     mscm_gc_toggle(rt, true);
+    return ret;
+}
+
+MSCM_NATIVE_FN(sym2str) {
+    (void)scope;
+    (void)ctx;
+
+    if (narg != 1) {
+        fprintf(stderr,
+                "jl-parse: expected 1 argument, got %" PRIu64 "\n",
+                (uint64_t)narg);
+        mscm_runtime_trace_exit(rt);
+    }
+
+    mscm_value arg = args[0];
+    if (!arg || arg->type != MSCM_TYPE_SYMBOL) {
+        fprintf(stderr, "sym->str: expected symbol argument\n");
+        mscm_runtime_trace_exit(rt);
+    }
+
+    mscm_string *s = (mscm_string*)arg;
+    mscm_value ret =
+        mscm_make_string(mscm_slice_from_cstr(s->buf), 0, 0);
+    ret->type = MSCM_TYPE_SYMBOL;
+    mscm_gc_add(rt, ret);
     return ret;
 }
 

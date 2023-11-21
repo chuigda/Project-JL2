@@ -17,5 +17,7 @@ LD_LIBRARY_PATH="$JULIA_LIB_PATH:$MSCM_LIB_PATH:$LD_LIBRARY_PATH" mscm \
     $MSCM_SHARE_SCM_PATH/std.scm \
     util.scm \
     pretty.scm \
+    ast.scm \
+    ast-norm.scm \
     drill.scm \
     $@

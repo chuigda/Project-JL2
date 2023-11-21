@@ -25,3 +25,5 @@
         (if (= n 0) (break))
         (f)
         (set! 'n (- n 1))))
+
+(define null '())

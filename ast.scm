@@ -1,36 +1,35 @@
-(define (make-call f args)
-    (struct 'k    'call
-            'f    f
-            'args args))
+(define (make-type-constraint type-var constraint)
+    (struct 'k          'type-constraint
+            'type-var   type-var
+            'constraint constraint))
 
-(define (make-top-level expr-list)
-    (struct 'k         'top-level
-            'expr-list expr-list))
+(define (make-forall-type type-vars body)
+    (struct 'k         'forall-type
+            'type-vars type-vars
+            'body      body))
 
+(define (make-struct-type type-name mutable fields)
+    (struct 'k       'struct-type
+            'mutable mutable
+            'fields  fields))
 
-(define (make-block expr-list)
-    (struct 'k         'block
-            'expr-list expr-list))
-
-(define (make-tuple expr-list)
-    (struct 'k         'tuple
-            'expr-list expr-list))
-
-(define (make-typed-item item type)
-    (struct 'k    'typed
-            'item item
+(define (make-abstract-type type)
+    (struct 'k    'abstract-type
             'type type))
 
-(define (make-function name param-list ret-type)
-    (struct 'k          'func
-            'name       name
-            'param-list param-list
-            'ret-type   ret-type))
+(define (make-var name type)
+    (struct 'k    'var
+            'name name
+            'type type))
 
-(define (ast-dump ast)
-    (imp-ast-dump 0 ast))
+(define (make-func type-vars params ret-type body)
+    (struct 'k         'func
+            'type-vars type-vars
+            'params    params
+            'ret-type  ret-type
+            'body      body))
 
-(define (print-space) (print "\t"))
-
-(define (imp-ast-dump indent ast)
-    (error "not implemented"))
+(define (make-expr op args)
+    (struct 'k    'expr
+            'op   op
+            'args args))
